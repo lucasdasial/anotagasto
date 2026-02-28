@@ -9,6 +9,8 @@ defmodule Anotagasto.Accounts.User do
     field :password, :string
     field :phone_number, :string
 
+    has_many :expenses, Anotagasto.Expenses.Expense
+
     timestamps(type: :utc_datetime)
   end
 

@@ -23,6 +23,12 @@ defmodule AnotagastoWeb.FallbackController do
     |> render(:"404")
   end
 
+  def call(conn, {:error, :user_not_found}) do
+    conn
+    |> put_status(:not_found)
+    |> json(%{error: "User not exist!"})
+  end
+
   def call(conn, params) do
     conn
     |> put_status(:bad_request)

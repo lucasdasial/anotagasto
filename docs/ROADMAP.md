@@ -530,7 +530,7 @@ Os endpoints de analytics (Fase 2) também devem respeitar o household como esco
     [ ] POST /expenses/parse (input por linguagem natural)
     [ ] Componente de chat no front
     [ ] Orçamentos por categoria
-    [ ] Despesas recorrentes
+    [ ] Despesas recorrentes (com status: pending → paid)
     [ ] Export CSV/PDF
     [ ] Upload de comprovante
     [ ] Tags livres
