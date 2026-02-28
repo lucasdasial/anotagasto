@@ -27,15 +27,19 @@ describe("timeout", () => {
 		timeout(req as never, res as never, next);
 		vi.advanceTimersByTime(3000);
 		expect(next).toHaveBeenCalledTimes(2);
-		expect(next).toHaveBeenLastCalledWith(expect.objectContaining({ statusCode: 408 }));
+		expect(next).toHaveBeenLastCalledWith(
+			expect.objectContaining({ statusCode: 408 }),
+		);
 	});
 
 	it("should clear timer on res finish event", () => {
 		timeout(req as never, res as never, next);
 
-		const finishCall = res.on.mock.calls.find((call) => call[0] === "finish");
+		const finishCall = res.on.mock.calls.find(
+			(call) => call[0] === "finish",
+		) as [string, () => void];
 		expect(finishCall).toBeDefined();
-		finishCall![1]();
+		finishCall[1]();
 
 		vi.advanceTimersByTime(3000);
 		expect(next).toHaveBeenCalledTimes(1);
@@ -44,9 +48,12 @@ describe("timeout", () => {
 	it("should clear timer on res close event", () => {
 		timeout(req as never, res as never, next);
 
-		const closeCall = res.on.mock.calls.find((call) => call[0] === "close");
+		const closeCall = res.on.mock.calls.find((call) => call[0] === "close") as [
+			string,
+			() => void,
+		];
 		expect(closeCall).toBeDefined();
-		closeCall![1]();
+		closeCall[1]();
 
 		vi.advanceTimersByTime(3000);
 		expect(next).toHaveBeenCalledTimes(1);

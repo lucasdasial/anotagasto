@@ -7,7 +7,7 @@ import type { UsersRepository } from "./users.repository.ts";
 const SALT_ROUNDS = 10;
 
 export class UsersService {
-	constructor(private readonly usersRepository: UsersRepository) { }
+	constructor(private readonly usersRepository: UsersRepository) {}
 
 	async register(data: { name: string; email: string; password: string }) {
 		const existing = await this.usersRepository.findByEmail(data.email);

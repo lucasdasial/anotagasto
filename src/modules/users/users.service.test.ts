@@ -38,7 +38,11 @@ describe("UsersService", () => {
 			mockRepository.findByEmail.mockResolvedValue(baseUser);
 
 			await expect(
-				service.register({ name: "Test", email: "test@test.com", password: "password123" }),
+				service.register({
+					name: "Test",
+					email: "test@test.com",
+					password: "password123",
+				}),
 			).rejects.toMatchObject({ statusCode: 409 });
 		});
 
@@ -46,10 +50,16 @@ describe("UsersService", () => {
 			mockRepository.findByEmail.mockResolvedValue(null);
 			mockRepository.create.mockResolvedValue(baseUser);
 
-			await service.register({ name: "Test", email: "test@test.com", password: "password123" });
+			await service.register({
+				name: "Test",
+				email: "test@test.com",
+				password: "password123",
+			});
 
 			expect(vi.mocked(bcrypt.hash)).toHaveBeenCalledWith("password123", 10);
-			expect(mockRepository.create.mock.calls[0][0].password).toBe("hashed_password");
+			expect(mockRepository.create.mock.calls[0][0].password).toBe(
+				"hashed_password",
+			);
 		});
 
 		it("should return user without password", async () => {
@@ -71,7 +81,11 @@ describe("UsersService", () => {
 			mockRepository.findByEmail.mockResolvedValue(baseUser);
 
 			await expect(
-				service.register({ name: "Test", email: "test@test.com", password: "password123" }),
+				service.register({
+					name: "Test",
+					email: "test@test.com",
+					password: "password123",
+				}),
 			).rejects.toBeInstanceOf(AppError);
 		});
 	});
@@ -98,7 +112,10 @@ describe("UsersService", () => {
 			mockRepository.findByEmail.mockResolvedValue(baseUser);
 			vi.mocked(bcrypt.compare).mockResolvedValue(true as never);
 
-			const result = await service.login({ email: "test@test.com", password: "password123" });
+			const result = await service.login({
+				email: "test@test.com",
+				password: "password123",
+			});
 
 			expect(result).toHaveProperty("token");
 			expect(typeof result.token).toBe("string");

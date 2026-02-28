@@ -40,9 +40,11 @@ describe("POST /api/auth/register", () => {
 		mockFindByEmail.mockResolvedValue(null);
 		mockCreate.mockResolvedValue(baseUser);
 
-		const res = await request(app)
-			.post("/api/auth/register")
-			.send({ name: "Test User", email: "test@test.com", password: "password123" });
+		const res = await request(app).post("/api/auth/register").send({
+			name: "Test User",
+			email: "test@test.com",
+			password: "password123",
+		});
 
 		expect(res.status).toBe(201);
 		expect(res.body).toHaveProperty("id");
@@ -62,9 +64,11 @@ describe("POST /api/auth/register", () => {
 	it("should return 409 when email is already in use", async () => {
 		mockFindByEmail.mockResolvedValue(baseUser);
 
-		const res = await request(app)
-			.post("/api/auth/register")
-			.send({ name: "Test User", email: "test@test.com", password: "password123" });
+		const res = await request(app).post("/api/auth/register").send({
+			name: "Test User",
+			email: "test@test.com",
+			password: "password123",
+		});
 
 		expect(res.status).toBe(409);
 		expect(res.body).toHaveProperty("error");
@@ -90,7 +94,9 @@ describe("POST /api/auth/login", () => {
 	});
 
 	it("should return 422 on invalid body", async () => {
-		const res = await request(app).post("/api/auth/login").send({ email: "bad" });
+		const res = await request(app)
+			.post("/api/auth/login")
+			.send({ email: "bad" });
 
 		expect(res.status).toBe(422);
 		expect(res.body).toHaveProperty("issues");

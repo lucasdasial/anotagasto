@@ -4,42 +4,42 @@ import type { UsersService } from "../../modules/users/users.service.ts";
 import { ValidationError } from "../errors/ValidationError.ts";
 
 const registerSchema = z.object({
-    name: z.string({ error: "Nome é obrigatório." }).min(2),
-    email: z.email({ error: "E-mail inválido." }),
-    password: z
-        .string({ error: "Senha é obrigatório." })
-        .min(8, { error: "Senha deve ter no mínimo 8 caracteres." }),
+	name: z.string({ error: "Nome é obrigatório." }).min(2),
+	email: z.email({ error: "E-mail inválido." }),
+	password: z
+		.string({ error: "Senha é obrigatório." })
+		.min(8, { error: "Senha deve ter no mínimo 8 caracteres." }),
 });
 
 const loginSchema = z.object({
-    email: z.email({ error: "E-mail inválido." }),
-    password: z.string({ error: "Senha é obrigatório." }).min(1),
+	email: z.email({ error: "E-mail inválido." }),
+	password: z.string({ error: "Senha é obrigatório." }).min(1),
 });
 
 export class AuthController {
-    constructor(private usersService: UsersService) { }
+	constructor(private usersService: UsersService) {}
 
-    register = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = registerSchema.safeParse(req.body);
-            if (!result.success) return next(new ValidationError(result.error));
+	register = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const result = registerSchema.safeParse(req.body);
+			if (!result.success) return next(new ValidationError(result.error));
 
-            const user = await this.usersService.register(result.data);
-            res.status(201).json(user);
-        } catch (err) {
-            next(err);
-        }
-    };
+			const user = await this.usersService.register(result.data);
+			res.status(201).json(user);
+		} catch (err) {
+			next(err);
+		}
+	};
 
-    login = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const result = loginSchema.safeParse(req.body);
-            if (!result.success) return next(new ValidationError(result.error));
+	login = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const result = loginSchema.safeParse(req.body);
+			if (!result.success) return next(new ValidationError(result.error));
 
-            const data = await this.usersService.login(result.data);
-            res.status(200).json(data);
-        } catch (err) {
-            next(err);
-        }
-    };
+			const data = await this.usersService.login(result.data);
+			res.status(200).json(data);
+		} catch (err) {
+			next(err);
+		}
+	};
 }

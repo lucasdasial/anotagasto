@@ -31,7 +31,11 @@ describe("AuthController", () => {
 		});
 
 		it("should call next with ValidationError when email is invalid", async () => {
-			req.body = { name: "Test", email: "not-an-email", password: "password123" };
+			req.body = {
+				name: "Test",
+				email: "not-an-email",
+				password: "password123",
+			};
 			await controller.register(req as never, res as never, next);
 			expect(next).toHaveBeenCalledWith(expect.any(ValidationError));
 		});
@@ -43,7 +47,11 @@ describe("AuthController", () => {
 		});
 
 		it("should call service.register and return 201 on valid input", async () => {
-			req.body = { name: "Test User", email: "test@test.com", password: "password123" };
+			req.body = {
+				name: "Test User",
+				email: "test@test.com",
+				password: "password123",
+			};
 			const user = { id: "1", name: "Test User", email: "test@test.com" };
 			vi.mocked(mockService.register).mockResolvedValue(user as never);
 
@@ -55,7 +63,11 @@ describe("AuthController", () => {
 		});
 
 		it("should forward service errors to next", async () => {
-			req.body = { name: "Test User", email: "test@test.com", password: "password123" };
+			req.body = {
+				name: "Test User",
+				email: "test@test.com",
+				password: "password123",
+			};
 			const err = new Error("Service error");
 			vi.mocked(mockService.register).mockRejectedValue(err);
 

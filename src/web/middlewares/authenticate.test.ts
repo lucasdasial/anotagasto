@@ -1,3 +1,4 @@
+import type { NextFunction } from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../../config/jwt.ts", () => ({
@@ -10,24 +11,28 @@ import { authenticate } from "./authenticate.ts";
 describe("authenticate", () => {
 	let req: { headers: Record<string, string>; body: Record<string, unknown> };
 	let res: object;
-	let next: ReturnType<typeof vi.fn>;
+	let next: NextFunction;
 
 	beforeEach(() => {
 		req = { headers: {}, body: {} };
 		res = {};
-		next = vi.fn();
+		next = vi.fn() as unknown as NextFunction;
 		vi.clearAllMocks();
 	});
 
 	it("should call next with 401 if Authorization header is missing", () => {
 		authenticate(req as never, res as never, next);
-		expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 401 }));
+		expect(next).toHaveBeenCalledWith(
+			expect.objectContaining({ statusCode: 401 }),
+		);
 	});
 
 	it("should call next with 401 if token is empty", () => {
 		req.headers.authorization = "Bearer ";
 		authenticate(req as never, res as never, next);
-		expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 401 }));
+		expect(next).toHaveBeenCalledWith(
+			expect.objectContaining({ statusCode: 401 }),
+		);
 	});
 
 	it("should set req.body.userId and call next() on valid token", () => {
@@ -48,6 +53,8 @@ describe("authenticate", () => {
 
 		authenticate(req as never, res as never, next);
 
-		expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 401 }));
+		expect(next).toHaveBeenCalledWith(
+			expect.objectContaining({ statusCode: 401 }),
+		);
 	});
 });
