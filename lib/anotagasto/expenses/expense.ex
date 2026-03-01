@@ -3,18 +3,21 @@ defmodule Anotagasto.Expenses.Expense do
   import Ecto.Changeset
 
   @category_enum [
-    :food,
+    :grocery,
     :eat_out,
     :cleaning_products,
     :health,
+    :medicines,
     :housing,
     :subscriptions,
-    :transport,
+    :transport_public,
+    :transport_apps,
     :education,
     :shopping,
     :debts,
     :leisure,
     :beauty,
+    :clothing,
     :uncategorized
   ]
 

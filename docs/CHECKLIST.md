@@ -58,14 +58,7 @@
 
 ---
 
-## Fase 4 — Refinamento de categorias
-
-- [ ] Atualizar enum no schema (`:grocery`, `:public_transport`, `:ride_apps`, `:personal_expenses`, `:medicine`)
-- [ ] Migration de banco para novo enum
-
----
-
-## Fase 5 — WhatsApp
+## Fase 4 — WhatsApp
 
 - [ ] `POST /api/whatsapp/webhook` com validação de assinatura
 - [ ] `GET /api/whatsapp/webhook` (verificação Meta)
@@ -75,7 +68,7 @@
 
 ---
 
-## Fase 6 — Extras
+## Fase 5 — Extras
 
 - [ ] `POST /api/expenses/parse` — input por linguagem natural
 - [ ] Orçamentos por categoria
@@ -86,7 +79,7 @@
 
 ---
 
-## Fase 7 — Households
+## Fase 6 — Households
 
 - [ ] Migration: tabela `households`
 - [ ] Migration: tabela `household_members`
