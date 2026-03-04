@@ -8,11 +8,18 @@ defmodule Anotagasto.AccountsTest do
 
     import Anotagasto.AccountsFixtures
 
-    @invalid_attrs %{name: nil, password: nil, phone_number: nil}
+    @invalid_attrs %{name: nil, password: "nil", phone_number: nil}
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert Accounts.list_users() == [user]
+
+      assert Accounts.list_users() == %{
+               total: 1,
+               page: 1,
+               page_size: 20,
+               total_pages: 1,
+               entries: [user]
+             }
     end
 
     test "get_user!/1 returns the user with given id" do
@@ -24,17 +31,18 @@ defmodule Anotagasto.AccountsTest do
       valid_attrs = %{
         name: "some name",
         password: "some password",
-        phone_number: "some phone_number"
+        phone_number: "91993964013"
       }
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
       assert user.name == "some name"
-      assert user.password == "some password"
-      assert user.phone_number == "some phone_number"
+      assert Bcrypt.verify_pass(valid_attrs.password, user.password)
+      assert user.phone_number == "91993964013"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_user(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.create_user(@invalid_attrs)
     end
 
     test "update_user/2 with valid data updates the user" do
@@ -43,13 +51,13 @@ defmodule Anotagasto.AccountsTest do
       update_attrs = %{
         name: "some updated name",
         password: "some updated password",
-        phone_number: "some updated phone_number"
+        phone_number: "91993964013"
       }
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.name == "some updated name"
-      assert user.password == "some updated password"
-      assert user.phone_number == "some updated phone_number"
+      assert Bcrypt.verify_pass(update_attrs.password, user.password)
+      assert user.phone_number == "91993964013"
     end
 
     test "update_user/2 with invalid data returns error changeset" do

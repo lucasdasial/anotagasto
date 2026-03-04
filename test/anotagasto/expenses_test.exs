@@ -7,6 +7,7 @@ defmodule Anotagasto.ExpensesTest do
     alias Anotagasto.Expenses.Expense
 
     import Anotagasto.ExpensesFixtures
+    import Anotagasto.AccountsFixtures
 
     @invalid_attrs %{value: nil, description: nil, category: nil, user_id: nil}
 
@@ -15,7 +16,15 @@ defmodule Anotagasto.ExpensesTest do
       {:ok, pagination} = Anotagasto.Pagination.build(%{})
       {:ok, filters} = Anotagasto.Expenses.Filters.build(%{})
       result = Expenses.list_expenses_by_user(expense.user_id, pagination, filters)
-      assert result.data == [expense]
+
+      assert %{
+               entries: [expense],
+               amount_total: 42,
+               page: 1,
+               page_size: 20,
+               total: 1,
+               total_pages: 1
+             } == result
     end
 
     test "get_expense!/1 returns the expense with given id" do
@@ -24,18 +33,20 @@ defmodule Anotagasto.ExpensesTest do
     end
 
     test "create_expense/1 with valid data creates a expense" do
+      user = user_fixture()
+
       valid_attrs = %{
         value: 42,
         description: "some description",
-        category: :food,
-        user_id: "7488a646-e31f-11e4-aace-600308960662"
+        category: :eat_out,
+        user_id: user.id
       }
 
       assert {:ok, %Expense{} = expense} = Expenses.create_expense(valid_attrs)
       assert expense.value == 42
       assert expense.description == "some description"
-      assert expense.category == :food
-      assert expense.user_id == "7488a646-e31f-11e4-aace-600308960662"
+      assert expense.category == :eat_out
+      assert expense.user_id == user.id
     end
 
     test "create_expense/1 with invalid data returns error changeset" do
@@ -48,15 +59,13 @@ defmodule Anotagasto.ExpensesTest do
       update_attrs = %{
         value: 43,
         description: "some updated description",
-        category: :eat_out,
-        user_id: "7488a646-e31f-11e4-aace-600308960668"
+        category: :eat_out
       }
 
       assert {:ok, %Expense{} = expense} = Expenses.update_expense(expense, update_attrs)
       assert expense.value == 43
       assert expense.description == "some updated description"
       assert expense.category == :eat_out
-      assert expense.user_id == "7488a646-e31f-11e4-aace-600308960668"
     end
 
     test "update_expense/2 with invalid data returns error changeset" do

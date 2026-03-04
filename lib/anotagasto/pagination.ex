@@ -12,7 +12,7 @@ defmodule Anotagasto.Pagination do
     field :page_size, :integer, default: @default_page_size
   end
 
-  def build(params) do
+  def build(params \\ %{}) do
     %__MODULE__{}
     |> cast(params, [:page, :page_size])
     |> validate_number(:page, greater_than_or_equal_to: 1)

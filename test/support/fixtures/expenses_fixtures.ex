@@ -8,12 +8,16 @@ defmodule Anotagasto.ExpensesFixtures do
   Generate a expense.
   """
   def expense_fixture(attrs \\ %{}) do
+    user_id = Map.get_lazy(attrs, :user_id, fn ->
+      Anotagasto.AccountsFixtures.user_fixture().id
+    end)
+
     {:ok, expense} =
       attrs
       |> Enum.into(%{
-        category: :food,
+        category: :grocery,
         description: "some description",
-        user_id: "7488a646-e31f-11e4-aace-600308960662",
+        user_id: user_id,
         value: 42
       })
       |> Anotagasto.Expenses.create_expense()

@@ -13,6 +13,12 @@ defmodule Anotagasto.Accounts do
     Repo.paginate(User, pagination)
   end
 
+  def list_users() do
+    with {:ok, pagination} <- Pagination.build() do
+      list_users(pagination)
+    end
+  end
+
   def get_user!(id), do: Repo.get!(User, id)
 
   def create_user(attrs) do
