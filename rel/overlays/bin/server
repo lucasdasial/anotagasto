@@ -2,5 +2,5 @@
 set -eu
 
 cd -P -- "$(dirname -- "$0")"
-RELEASE_DISTRIBUTION=none ./anotagasto eval "Anotagasto.Release.migrate()"
+RELEASE_DISTRIBUTION=none ./anotagasto eval "Anotagasto.Release.migrate"
 PHX_SERVER=true RELEASE_DISTRIBUTION=none exec ./anotagasto start

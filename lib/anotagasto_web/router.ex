@@ -14,6 +14,7 @@ defmodule AnotagastoWeb.Router do
   scope "/api", AnotagastoWeb do
     pipe_through :api
 
+    get "/health", HealthController, :index
     post "/register", UserController, :create
     post "/auth", AuthController, :login
   end
