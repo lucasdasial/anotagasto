@@ -3,5 +3,5 @@ services:
     image: anotagasto-api:latest
     container_name: anotagasto-api
     network_mode: host
-    env_file: /anotagasto.env
+    env_file: /home/lucas/anotagasto.env
     restart: unless-stopped
